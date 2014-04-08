@@ -85,7 +85,7 @@ static BOOL isShown = false;
         [self.navigationBarView addSubview:self.titleLabel];
         
         self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.closeButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+        [self changeCloseButtonImage:_selectedList];
         [self.closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
         [self.navigationBarView addSubview:self.closeButton];
         
@@ -124,6 +124,15 @@ static BOOL isShown = false;
 - (void)closeButtonClicked:(id)sender
 {
     [self hideAnimated:self.closeAnimated];
+}
+
+-(void)changeCloseButtonImage:(NSArray *)selList
+{
+    if (selList.count > 0) {
+        [self.closeButton setImage:[UIImage imageNamed:@"checkMark"] forState:UIControlStateNormal];
+    }else{
+        [self.closeButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - UITableView DataSource
@@ -170,7 +179,7 @@ static BOOL isShown = false;
         } else {
             [self.selectedList addObject:[self.arrayList objectAtIndex:indexPath.row]];
         }
-        
+        [self changeCloseButtonImage:_selectedList];
         [self.tableView reloadData];
     } else {
         if ([self.delegate respondsToSelector:@selector(popupListView:didSelectedIndex:)]) {
